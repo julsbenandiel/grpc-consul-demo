@@ -6,7 +6,7 @@ export enum APP_SERVICE {
   book = 'book-service'
 }
 
-const consulClient = new Consul({ host: 'localhost', port: '8500' })
+export const consulClient = new Consul({ host: 'localhost', port: '8500' })
 
 export async function discoverService(name: APP_SERVICE): Promise<Record<string, string | number>> {
   const serviceObj = await consulClient.agent.services() as Record<string, {[key: string]: string | number }>
@@ -31,4 +31,26 @@ export async function makeHttpRequestFromService(
     url,
     data
   })
+}
+
+export async function saveToServiceRegistry(payload: Partial<Consul.Agent.Service.RegisterOptions>): Promise<Error | null> {
+  const options: Consul.Agent.Service.RegisterOptions = {
+    name: payload.name as string,
+    port: Number(payload.port),
+    address: payload.address,
+    check: {
+      http: `http://host.docker.internal:${payload.port}/health`, // Add health check endpoint
+      interval: '30s',
+    },
+  }
+
+  try {
+    await consulClient.agent.service.register(options)
+    return null
+
+  } catch (error) {
+    console.log(error)
+    throw new Error("Cannot register service")
+  }
+  
 }
