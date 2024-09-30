@@ -4,6 +4,7 @@ import colors from 'colors'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import path from 'node:path'
+import { ServiceLocator } from '../helper/consul'
 
 dotenv.config({ 
   path: path.resolve(__dirname, '../.env.local')
@@ -38,5 +39,12 @@ app.get('/book', async (_: Request, res: Response) => {
 
 app.listen(port, async () => {
   connectToDb()
+
+  await ServiceLocator.saveToServiceRegistry({
+    name: 'book',
+    address: 'localhost',
+    port,
+  })
+
   console.log(colors.bgMagenta(` Book service running at http://localhost:${port} `));
 });
