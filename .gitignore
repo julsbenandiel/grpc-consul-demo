@@ -3,3 +3,4 @@ book-service/node_modules
 helper/node_modules
 
 backend/node_modules
+.env.*
