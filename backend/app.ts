@@ -29,8 +29,8 @@ app.get('/authors-with-books', async (req: Request, res: Response) => {
     const bookService = new BookService()
 
     const authorsQuery = await authorService.get('/author')
-    
-    const booksQuery = await bookService.getBooks()
+
+    const booksQuery = await bookService.getAllBooks()
 
     const authorMap = _.keyBy(authorsQuery.authors, 'email')
 

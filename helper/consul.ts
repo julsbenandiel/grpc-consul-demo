@@ -1,13 +1,13 @@
 import axios, { AxiosRequestConfig, Method } from 'axios'
 import Consul from 'consul'
-import * as grpc from '@grpc/grpc-js';
 
+const consulClient = new Consul({ host: 'localhost', port: '8500' })
 export class ServiceLocator {
   private client: Consul.Consul
   private name: string
 
   constructor(name: string) {
-    this.client = new Consul({ host: 'localhost', port: '8500' })
+    this.client = consulClient
     this.name = name
   }
 
@@ -53,8 +53,7 @@ export class ServiceLocator {
   }
 
   static async getServiceConfig(name: APP_SERVICE): Promise<ServiceNode> {
-    const consul = new Consul({ host: 'localhost', port: '8500' })
-    const services = await consul.agent.services() as Record<string, ServiceNode>
+    const services = await consulClient.agent.services() as Record<string, ServiceNode>
     const service = services[name]
 
     if (!service)
@@ -65,8 +64,7 @@ export class ServiceLocator {
 
   static async getRegisteredServices() {
     try {
-      const consul = new Consul({ host: 'localhost', port: '8500' })
-      const services = await consul.agent.services()
+      const services = await consulClient.agent.services()
       return services
     } catch (error) {
       console.log(error)
@@ -74,8 +72,6 @@ export class ServiceLocator {
   }
 
   static async saveToServiceRegistry(payload: Partial<Consul.Agent.Service.RegisterOptions>): Promise<Error | null> {
-    const consulClient = new Consul({ host: 'localhost', port: '8500' })
-
     const options: Consul.Agent.Service.RegisterOptions = {
       name: payload.name as string,
       port: Number(payload.port),

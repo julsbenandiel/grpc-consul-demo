@@ -14,12 +14,14 @@ export class BookService {
     ServiceLocator
       .getServiceConfig(APP_SERVICE.author_grpc)
       .then((config) => {
-        const client = new BooksClient(`${config.Address}:${config.Port}`, grpc.credentials.createInsecure())
+        const cred = grpc.credentials.createInsecure()
+        const client = new BooksClient(`${config.Address}:${config.Port}`, cred)
+
         this.bookClient = client
       })
   }
 
-  async getBooks(): Promise<GetBooksResponse> {
+  async getAllBooks(): Promise<GetBooksResponse> {
     return new Promise((resolve, reject) => {
       this.bookClient?.getAllBooks({}, (error, response) => {
         if (error)
