@@ -8,7 +8,7 @@ service Books {
 }
 
 message Book {
-  string _id = 1;
+  string id = 1;
   string title = 2;
   string name = 3;
   string author = 4;

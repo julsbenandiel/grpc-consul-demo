@@ -22,7 +22,7 @@ import {
 export const protobufPackage = "book";
 
 export interface Book {
-  Id: string;
+  id: string;
   title: string;
   name: string;
   author: string;
@@ -84,13 +84,13 @@ export function healthCheckResponse_ServingStatusToJSON(object: HealthCheckRespo
 }
 
 function createBaseBook(): Book {
-  return { Id: "", title: "", name: "", author: "" };
+  return { id: "", title: "", name: "", author: "" };
 }
 
 export const Book: MessageFns<Book> = {
   encode(message: Book, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.Id !== "") {
-      writer.uint32(10).string(message.Id);
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
     }
     if (message.title !== "") {
       writer.uint32(18).string(message.title);
@@ -116,7 +116,7 @@ export const Book: MessageFns<Book> = {
             break;
           }
 
-          message.Id = reader.string();
+          message.id = reader.string();
           continue;
         }
         case 2: {
@@ -154,7 +154,7 @@ export const Book: MessageFns<Book> = {
 
   fromJSON(object: any): Book {
     return {
-      Id: isSet(object.Id) ? globalThis.String(object.Id) : "",
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
       title: isSet(object.title) ? globalThis.String(object.title) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       author: isSet(object.author) ? globalThis.String(object.author) : "",
@@ -163,8 +163,8 @@ export const Book: MessageFns<Book> = {
 
   toJSON(message: Book): unknown {
     const obj: any = {};
-    if (message.Id !== "") {
-      obj.Id = message.Id;
+    if (message.id !== "") {
+      obj.id = message.id;
     }
     if (message.title !== "") {
       obj.title = message.title;
@@ -183,7 +183,7 @@ export const Book: MessageFns<Book> = {
   },
   fromPartial<I extends Exact<DeepPartial<Book>, I>>(object: I): Book {
     const message = createBaseBook();
-    message.Id = object.Id ?? "";
+    message.id = object.id ?? "";
     message.title = object.title ?? "";
     message.name = object.name ?? "";
     message.author = object.author ?? "";

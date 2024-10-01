@@ -21,7 +21,7 @@ const bookServiceImpl: BooksServer = {
     callback(null, {
       count: books.length,
       books: books.map((book) => ({
-        Id: book._id.toString(),
+        id: book._id.toString(),
         author: book.author,
         name: book.name,
         title: book.title
