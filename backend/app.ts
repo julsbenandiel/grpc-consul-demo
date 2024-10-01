@@ -32,10 +32,12 @@ app.get('/authors-with-books', async (req: Request, res: Response) => {
 
     const authorMap = _.keyBy(authorsQuery.authors, 'email')
 
-    const books: any[] = booksQuery.books.map((book: Book) => {
+    const books: any[] = booksQuery.books.map((book) => {
       const author = authorMap[book.author]
       return {
-        ...book,
+        id: book.Id,
+        title: book.title,
+        name: book.name,
         author
       }
     })
