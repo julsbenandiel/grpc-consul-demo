@@ -3,30 +3,34 @@ syntax="proto3";
 package book;
 
 service Books {
+  rpc HealthCheck(HealthCheckRequest) returns (HealthCheckResponse);
   rpc GetAllBooks(GetAllBooksRequest) returns (GetBooksResponse);
-  rpc GetBookById(GetBookByIdRequest) returns (GetBookByIdResponse);
 }
 
 message Book {
   string _id = 1;
   string title = 2;
-  string author = 3;
-  string isbn = 4;
+  string name = 3;
+  string author = 4;
 }
 
-message GetAllBooksRequest {
-  string sort = 1;
-  string id = 2;
-}
+message GetAllBooksRequest {}
 
 message GetBooksResponse {
-  repeated Book books = 1;
+  int32 count = 1;
+  repeated Book books = 2;
 }
 
-message GetBookByIdRequest {
-  string _id = 1;
+message HealthCheckRequest {
+  string service = 1;
 }
 
-message GetBookByIdResponse {
-  repeated Book books = 1;
+message HealthCheckResponse {
+  enum ServingStatus {
+    UNKNOWN = 0;
+    SERVING = 1;
+    NOT_SERVING = 2;
+  }
+  
+  ServingStatus status = 1;
 }

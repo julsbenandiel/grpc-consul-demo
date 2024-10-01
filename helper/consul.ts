@@ -67,7 +67,7 @@ export class ServiceLocator {
       name: payload.name as string,
       port: Number(payload.port),
       address: payload.address,
-      check: {
+      check: payload.check ? payload.check : {
         http: `http://host.docker.internal:${payload.port}/health`, // Add health check endpoint
         interval: '30s',
       },

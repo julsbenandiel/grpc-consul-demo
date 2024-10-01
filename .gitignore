@@ -1,6 +1,7 @@
 author-service/node_modules
 book-service/node_modules
 helper/node_modules
+author-service-grpc/node_modules
 
 backend/node_modules
 .env.*
