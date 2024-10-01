@@ -16,8 +16,7 @@ app.get('/health', async (_: Request, res: Response) => {
 })
 
 app.get('/services', async (_: Request, res: Response) => {
-  const authorService = new ServiceLocator(APP_SERVICE.author)
-  const services = await authorService.client.agent.services()
+  const services = await ServiceLocator.getRegisteredServices()
   res.status(200).json(services)
 })
 
@@ -42,8 +41,9 @@ app.get('/authors-with-books', async (req: Request, res: Response) => {
     })
 
     res.status(200).json(books)
+    
   } catch (error) {
-    res.status(200).json(error)
+    res.status(400).json(error)
   }
 });
 

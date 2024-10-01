@@ -1,8 +1,8 @@
-import axios, { Method } from 'axios'
+import axios, { AxiosRequestConfig, Method } from 'axios'
 import Consul from 'consul'
 export class ServiceLocator {
-  client: Consul.Consul
-  name: string
+  private client: Consul.Consul
+  private name: string
 
   constructor(name: string) {
     this.client = new Consul({ host: 'localhost', port: '8500' })
@@ -10,11 +10,31 @@ export class ServiceLocator {
   }
 
   async get(path: string) {
+    return this.getHttpClient({ url: path })
+  }
+
+  async post(path: string, body: any = {}) {
+    return this.getHttpClient({ url: path, method: 'POST', data: body })
+  }
+
+  async put(path: string, body: any = {}) {
+    return this.getHttpClient({ url: path, method: 'PUT', data: body })
+  }
+
+  async delete(path: string) {
+    return this.getHttpClient({ url: path, method: 'DELETE' })
+  }
+
+  private async getHttpClient(params: AxiosRequestConfig) {
     try {
       const service = await this.getService()
-      const res = await axios.get(`http://${service.Address}:${service.Port}${path}`)
-  
+      const res = await axios({
+        ...params,
+        url: `http://${service.Address}:${service.Port}${params.url}`
+      })
+
       return res.data
+
     } catch (error) {
       console.log(error)
     }
@@ -28,6 +48,16 @@ export class ServiceLocator {
       throw new Error('Service not found')
 
     return service
+  }
+
+  static async getRegisteredServices() {
+    try {
+      const consul = new Consul({ host: 'localhost', port: '8500' })
+      const services = await consul.agent.services()
+      return services
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   static async saveToServiceRegistry(payload: Partial<Consul.Agent.Service.RegisterOptions>): Promise<Error | null> {
