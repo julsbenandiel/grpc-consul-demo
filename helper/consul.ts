@@ -1,5 +1,7 @@
 import axios, { AxiosRequestConfig, Method } from 'axios'
 import Consul from 'consul'
+import * as grpc from '@grpc/grpc-js';
+
 export class ServiceLocator {
   private client: Consul.Consul
   private name: string
@@ -40,9 +42,20 @@ export class ServiceLocator {
     }
   }
 
-  private async getService(): Promise<ServiceNode> {
+  public async getService(): Promise<ServiceNode> {
     const services = await this.client.agent.services() as Record<string, ServiceNode>
     const service = services[this.name]
+
+    if (!service)
+      throw new Error('Service not found')
+
+    return service
+  }
+
+  static async getServiceConfig(name: APP_SERVICE): Promise<ServiceNode> {
+    const consul = new Consul({ host: 'localhost', port: '8500' })
+    const services = await consul.agent.services() as Record<string, ServiceNode>
+    const service = services[name]
 
     if (!service)
       throw new Error('Service not found')
@@ -86,7 +99,8 @@ export class ServiceLocator {
 
 export enum APP_SERVICE {
   author = 'author',
-  book = 'book'
+  book = 'book',
+  author_grpc = 'author-grpc'
 }
 
 export type RequestParams = {

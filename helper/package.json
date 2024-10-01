@@ -5,6 +5,7 @@
   "author": "juls",
   "license": "MIT",
   "dependencies": {
+    "@grpc/grpc-js": "^1.11.3",
     "axios": "^1.7.7",
     "consul": "^1.2.0",
     "dotenv": "^16.4.5",
@@ -12,5 +13,8 @@
   },
   "devDependencies": {
     "@types/consul": "^0.40.3"
+  },
+  "scripts": {
+    "gen-names": "npx ts-node get-names.ts"
   }
 }
