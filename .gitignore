@@ -3,5 +3,8 @@ book-service/node_modules
 helper/node_modules
 author-service-grpc/node_modules
 
+protocol-buffers/generated
+protocol-buffers/node_modules
+
 backend/node_modules
 .env.*

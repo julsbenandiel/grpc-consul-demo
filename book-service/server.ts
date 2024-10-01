@@ -10,6 +10,8 @@ dotenv.config({
   path: path.resolve(__dirname, '../.env.local')
 })
 
+const PORT = '5002';
+
 const bookServiceImpl: BooksServer = {
   healthCheck: (_, callback) => {
     callback(null, { status: HealthCheckResponse_ServingStatus.SERVING });
@@ -35,17 +37,13 @@ const server = new grpc.Server();
 
 server.addService(BooksService, bookServiceImpl);
 
-const PORT = '50051';
-const HOST = '0.0.0.0'
+server.bindAsync(`localhost:${PORT}`, grpc.ServerCredentials.createInsecure(), () => {
 
-server.bindAsync(`${HOST}:${PORT}`, grpc.ServerCredentials.createInsecure(), async () => {
-  ServiceLocator.saveToServiceRegistry({
-    name: 'author-grpc',
-    address: HOST,
-    port: Number(PORT),
-  })
+  ServiceLocator
+    .saveToServiceRegistry({ name: 'author-grpc', address: 'localhost', port: Number(PORT) })
+    .then(() => {
+      connectToDb()
+    })
 
-  connectToDb()
-
-  console.log(colors.bgMagenta(` gRPC server running on ${HOST}:${PORT} `));
+  console.log(colors.bgMagenta(` [gRPC] Book service running on localhost:${PORT} `));
 });

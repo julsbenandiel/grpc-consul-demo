@@ -13,16 +13,17 @@ export function connectToDb() {
     })
 }
 
-interface BookDocument extends mongoose.Document {
+export interface BookDocument extends mongoose.Document {
+  _id: mongoose.Types.ObjectId,
   title: string;
   author: string;
-  genre: string;
+  name: string;
 }
 
 const schema: mongoose.Schema<BookDocument> = new mongoose.Schema({
   title: String,
   author: String,
-  genre: String
+  name: String
 })
 
-export const Book = mongoose.model<BookDocument>('book', schema)
+export const BookModel = mongoose.model<BookDocument>('book', schema)

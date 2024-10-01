@@ -1,0 +1,35 @@
+syntax="proto3";
+
+package author;
+
+service Authors {
+  rpc HealthCheck(HealthCheckRequest) returns (HealthCheckResponse);
+  rpc GetAllAuthors(GetAllAuthorsRequest) returns (GetAllAuthorsResponse);
+}
+
+message Author {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+}
+
+message GetAllAuthorsRequest {}
+
+message GetAllAuthorsResponse {
+  int32 count = 1;
+  repeated Author authors = 2;
+}
+
+message HealthCheckRequest {
+  string service = 1;
+}
+
+message HealthCheckResponse {
+  enum ServingStatus {
+    UNKNOWN = 0;
+    SERVING = 1;
+    NOT_SERVING = 2;
+  }
+  
+  ServingStatus status = 1;
+}

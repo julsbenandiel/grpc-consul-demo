@@ -1,11 +1,9 @@
 import express, { Request, Response } from 'express';
+import { APP_SERVICE, ServiceLocator } from '../helper/consul';
+import { BookService } from './grpc_services/book-service';
 import colors from 'colors';
 import cors from 'cors';
 import _ from 'lodash';
-import { APP_SERVICE, ServiceLocator } from '../helper/consul';
-import { BooksClient } from './generated/book';
-import * as grpc from '@grpc/grpc-js'
-import { BookService } from './grpc_services/book';
 
 const app = express();
 const port = 5000
