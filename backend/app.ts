@@ -15,7 +15,7 @@ app.get('/health', async (_: Request, res: Response) => {
   res.status(200).json({ status: "[backend] healthy" })
 })
 
-app.get('/authors-with-books', async (req: Request, res: Response) => {
+app.get('/books-with-author', async (req: Request, res: Response) => {
   try {
     const authorsQuery = await axios.get('http://localhost:5001/author')
     const booksQuery = await axios.get('http://localhost:5002/book')
@@ -32,7 +32,7 @@ app.get('/authors-with-books', async (req: Request, res: Response) => {
 
     res.status(200).json(books)
   } catch (error) {
-    res.status(200).json(error)
+    res.status(400).json(error)
   }
 });
 
