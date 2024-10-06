@@ -11,7 +11,6 @@ dotenv.config({
 })
 
 const app = express();
-const port = 5002
 
 app.use(cors())
 app.use(express.json())
@@ -36,6 +35,8 @@ app.get('/book', async (_: Request, res: Response) => {
     res.status(400).json(error)
   }
 })
+
+const port = 5002
 
 app.listen(port, async () => {
   connectToDb()
