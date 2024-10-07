@@ -1,5 +1,5 @@
 import * as grpc from '@grpc/grpc-js';
-import { BooksServer, BooksService, HealthCheckResponse_ServingStatus } from './generated/book';
+import { BooksServer, BooksService, GetBooksResponse, HealthCheckResponse, HealthCheckResponse_ServingStatus } from './generated/book';
 import { ServiceLocator } from '../helper/consul'
 import { BookDocument, BookModel, connectToDb } from './database';
 import colors from 'colors'
@@ -10,17 +10,19 @@ dotenv.config({
   path: path.resolve(__dirname, '../.env.local')
 })
 
-const PORT = '5002';
-
 const bookServiceImpl: BooksServer = {
   healthCheck: (_, callback) => {
-    callback(null, { status: HealthCheckResponse_ServingStatus.SERVING });
+    const response = HealthCheckResponse.create({
+      status: HealthCheckResponse_ServingStatus.SERVING
+    })
+    
+    callback(null, response);
   },
 
   getAllBooks: async (_, callback) => {
     const books = await BookModel.find<BookDocument>({})
 
-    callback(null, {
+    const response = GetBooksResponse.create({
       count: books.length,
       books: books.map((book) => ({
         id: book._id.toString(),
@@ -28,9 +30,14 @@ const bookServiceImpl: BooksServer = {
         name: book.name,
         title: book.title
       }))
-    });
+    })
+
+    callback(null, response);
   }
 };
+
+
+const PORT = '5002';
 
 // Create and start the gRPC server
 const server = new grpc.Server();

@@ -1,6 +1,7 @@
 author-service/node_modules
 book-service/node_modules
 helper/node_modules
+helper/names.txt
 author-service-grpc/node_modules
 
 protocol-buffers/generated

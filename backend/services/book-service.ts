@@ -1,8 +1,8 @@
 import { APP_SERVICE, ServiceLocator } from "../../helper/consul"
-import { BooksClient, GetBooksResponse } from "./book"
+import { BooksClient, GetBooksResponse } from "../generated/book"
 import * as grpc from '@grpc/grpc-js'
 
-export class BookService {
+class BookService {
   bookClient: BooksClient | null
 
   constructor() {
@@ -32,3 +32,5 @@ export class BookService {
     })
   }
 }
+
+export const bookService = new BookService()

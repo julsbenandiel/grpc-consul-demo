@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { APP_SERVICE, ServiceLocator } from '../helper/consul';
-import { BookService } from './grpc_services/book-service';
+import { bookService } from './services/book-service';
 import colors from 'colors';
 import cors from 'cors';
 import _ from 'lodash';
@@ -21,10 +21,9 @@ app.get('/services', async (_: Request, res: Response) => {
   res.status(200).json(services)
 })
 
-app.get('/authors-with-books', async (req: Request, res: Response) => {
+app.get('/books-with-author', async (req: Request, res: Response) => {
   try {
     const authorService = new ServiceLocator(APP_SERVICE.author)
-    const bookService = new BookService()
 
     const authorsQuery = await authorService.get('/author')
 
