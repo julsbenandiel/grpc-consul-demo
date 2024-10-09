@@ -36,7 +36,7 @@ app.get('/book', async (_: Request, res: Response) => {
   }
 })
 
-const port = 5002
+const port = 6002
 
 app.listen(port, async () => {
   connectToDb()

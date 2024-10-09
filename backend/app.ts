@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { APP_SERVICE, ServiceLocator } from '../helper/consul';
 
 const app = express();
-const port = 5000
+const port = 6000
 
 app.use(cors())
 app.use(express.json())
