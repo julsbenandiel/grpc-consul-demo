@@ -7,7 +7,9 @@ import (
 	"net"
 	"os"
 	"path/filepath"
+	"strconv"
 
+	"github.com/fatih/color"
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
@@ -68,6 +70,25 @@ func main() {
 		log.Fatalf("Error loading .env file: %v", err)
 	}
 
+	// register service via http
+	consulAddr := "http://localhost:8500"
+	serviceID := "author-grpc"
+	serviceName := "author-grpc"
+	serviceAddr := "localhost"
+	var servicePort int
+
+	port, err := strconv.Atoi(PORT)
+
+	if err != nil {
+		log.Fatalf("Failed to convert port")
+	}
+
+	servicePort = port
+
+	if err := RegisterService(consulAddr, serviceID, serviceName, serviceAddr, servicePort); err != nil {
+		fmt.Printf("Error: %v\n", err)
+	}
+
 	// Connect to MongoDB
 	clientOptions := options.Client().ApplyURI(os.Getenv("MONGO_URI"))
 	client, err := mongo.Connect(clientOptions)
@@ -75,6 +96,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to connect to MongoDB: %v", err)
 	}
+
 	fmt.Println("Author service mongo status: CONNECTED")
 
 	collection := client.Database("author-service").Collection("authors")
@@ -91,7 +113,8 @@ func main() {
 	// Register the Authors service
 	pb.RegisterAuthorsServer(grpcServer, server)
 
-	fmt.Printf(" [gRPC] Author service running on localhost:%s", PORT)
+	msg := fmt.Sprintf(" [gRPC] Author service running on localhost:%s", PORT)
+	color.New(color.BgGreen).Println(msg)
 
 	if err := grpcServer.Serve(listener); err != nil {
 		log.Fatalf("Failed to serve gRPC server: %v", err)

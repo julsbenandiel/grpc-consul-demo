@@ -21,7 +21,7 @@
     "typescript": "^5.5.4"
   },
   "scripts": {
-    "dev": "npx ts-node-dev server.ts",
+    "dev": "npx ts-node-dev app.ts",
     "generate": "npx ts-node grpc.ts"
   }
 }

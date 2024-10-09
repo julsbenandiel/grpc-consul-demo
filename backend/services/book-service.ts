@@ -12,7 +12,7 @@ class BookService {
 
   initialize() {
     ServiceLocator
-      .getServiceConfig(APP_SERVICE.author_grpc)
+      .getServiceConfig(APP_SERVICE.book_grpc)
       .then((config) => {
         const cred = grpc.credentials.createInsecure()
         const client = new BooksClient(`${config.Address}:${config.Port}`, cred)
@@ -21,7 +21,7 @@ class BookService {
       })
   }
 
-  async getAllBooks(): Promise<GetBooksResponse> {
+  async getBooks(): Promise<GetBooksResponse> {
     return new Promise((resolve, reject) => {
       this.bookClient?.getAllBooks({}, (error, response) => {
         if (error)

@@ -1,12 +1,12 @@
 import express, { Request, Response } from 'express';
 import { APP_SERVICE, ServiceLocator } from '../helper/consul';
-import { bookService } from './services/book-service';
+import { bookService, authorService } from './services'
 import colors from 'colors';
 import cors from 'cors';
 import _ from 'lodash';
 
 const app = express();
-const port = 5000
+const port = 6000
 
 app.use(cors())
 app.use(express.json())
@@ -23,11 +23,8 @@ app.get('/services', async (_: Request, res: Response) => {
 
 app.get('/books-with-author', async (req: Request, res: Response) => {
   try {
-    const authorService = new ServiceLocator(APP_SERVICE.author)
-
-    const authorsQuery = await authorService.get('/author')
-
-    const booksQuery = await bookService.getAllBooks()
+    const authorsQuery = await authorService.getAuthors()
+    const booksQuery = await bookService.getBooks()
 
     const authorMap = _.keyBy(authorsQuery.authors, 'email')
 

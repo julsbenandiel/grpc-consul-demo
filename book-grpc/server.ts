@@ -37,7 +37,7 @@ const bookServiceImpl: BooksServer = {
 };
 
 
-const PORT = '5002';
+const PORT = '50052';
 
 // Create and start the gRPC server
 const server = new grpc.Server();
@@ -47,7 +47,7 @@ server.addService(BooksService, bookServiceImpl);
 server.bindAsync(`localhost:${PORT}`, grpc.ServerCredentials.createInsecure(), () => {
 
   ServiceLocator
-    .saveToServiceRegistry({ name: 'author-grpc', address: 'localhost', port: Number(PORT) })
+    .saveToServiceRegistry({ name: 'book-grpc', address: 'localhost', port: Number(PORT) })
     .then(() => {
       connectToDb()
     })

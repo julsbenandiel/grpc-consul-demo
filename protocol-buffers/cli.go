@@ -86,7 +86,7 @@ func runProtocCommand(protoFile, protoPath string) {
 		"--plugin=./node_modules/.bin/protoc-gen-ts_proto",
 		"--ts_proto_opt=outputServices=grpc-js",
 		"--proto_path", protoPath,
-		"--ts_proto_out=generated", filepath.Join(protoPath, protoFile))
+		"--ts_proto_out=./generated", filepath.Join(protoPath, protoFile))
 
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr

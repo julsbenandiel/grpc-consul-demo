@@ -57,7 +57,7 @@ export class ServiceLocator {
     const service = services[name]
 
     if (!service)
-      throw new Error('Service not found')
+      throw new Error(`Service: ${service}: not found`)
 
     return service
   }
@@ -96,7 +96,8 @@ export class ServiceLocator {
 export enum APP_SERVICE {
   author = 'author',
   book = 'book',
-  author_grpc = 'author-grpc'
+  author_grpc = 'author-grpc',
+  book_grpc = 'book-grpc'
 }
 
 export type RequestParams = {
