@@ -5,7 +5,7 @@ import cors from 'cors'
 import _ from 'lodash'
 
 const app = express();
-const port = 5000
+const port = 6000
 
 app.use(cors())
 app.use(express.json())

@@ -10,7 +10,7 @@ dotenv.config({
 })
 
 const app = express();
-const port = 5002
+const port = 6002
 
 app.use(cors())
 app.use(express.json())
