@@ -30,7 +30,7 @@ func main() {
 	}
 
 	// Step 2: List .proto files in the folder
-	protoPath := "./protos"
+	protoPath := "../protos"
 	files, err := getProtoFiles(protoPath)
 	if err != nil {
 		fmt.Printf("Error reading proto files: %v\n", err)
@@ -78,7 +78,7 @@ func getProtoFiles(dir string) ([]string, error) {
 
 // Helper function to run the protoc command
 func runProtocCommand(protoFile, protoPath string) {
-	newpath := filepath.Join(".", "generated")
+	newpath := filepath.Join("..", "generated")
 	if err := os.MkdirAll(newpath, os.ModePerm); err != nil {
 		log.Fatal("Cannot create folder:", err)
 	}
@@ -86,10 +86,10 @@ func runProtocCommand(protoFile, protoPath string) {
 	fmt.Printf("Generating TypeScript code for %s...\n", protoFile)
 
 	cmd := exec.Command("protoc",
-		"--plugin=./node_modules/.bin/protoc-gen-ts_proto",
+		"--plugin=../node_modules/.bin/protoc-gen-ts_proto",
 		"--ts_proto_opt=outputServices=grpc-js",
 		"--proto_path", protoPath,
-		"--ts_proto_out=./generated", filepath.Join(protoPath, protoFile))
+		"--ts_proto_out=../generated", filepath.Join(protoPath, protoFile))
 
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr

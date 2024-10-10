@@ -1,5 +1,5 @@
 def:
-	go run generate-definition.go
+	cd ./generate-definition && go run .
 
 names:
 	cd ./generate-names && go run .
