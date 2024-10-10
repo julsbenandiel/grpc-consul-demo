@@ -8,12 +8,9 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
-
-	"context"
 )
 
 func main() {
-	context.TODO()
 
 	// Step 1: Ask the user for the language
 	fmt.Println("Select the language:")
@@ -81,7 +78,7 @@ func getProtoFiles(dir string) ([]string, error) {
 
 // Helper function to run the protoc command
 func runProtocCommand(protoFile, protoPath string) {
-	newpath := filepath.Join(".", "generated")
+	newpath := filepath.Join("../../", "generated")
 	if err := os.MkdirAll(newpath, os.ModePerm); err != nil {
 		log.Fatal("Cannot create folder:", err)
 	}
