@@ -42,6 +42,7 @@ func main() {
 	// Retrieve books from MongoDB
 	collection := client.Database("book-service").Collection("books")
 	filter := bson.M{"name": bson.M{"$ne": nil}}
+
 	cursor, err := collection.Find(context.TODO(), filter)
 	if err != nil {
 		log.Fatalf("Error retrieving books: %v", err)
