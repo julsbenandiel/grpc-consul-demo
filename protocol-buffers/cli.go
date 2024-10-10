@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -80,6 +81,11 @@ func getProtoFiles(dir string) ([]string, error) {
 
 // Helper function to run the protoc command
 func runProtocCommand(protoFile, protoPath string) {
+	newpath := filepath.Join(".", "generated")
+	if err := os.MkdirAll(newpath, os.ModePerm); err != nil {
+		log.Fatal("Cannot create folder:", err)
+	}
+
 	fmt.Printf("Generating TypeScript code for %s...\n", protoFile)
 
 	cmd := exec.Command("protoc",
