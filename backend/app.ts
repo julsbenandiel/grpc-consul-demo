@@ -17,8 +17,8 @@ app.get('/health', async (_: Request, res: Response) => {
 
 app.get('/books-with-author', async (req: Request, res: Response) => {
   try {
-    const authorsQuery = await axios.get('http://localhost:5001/author')
-    const booksQuery = await axios.get('http://localhost:5002/book')
+    const authorsQuery = await axios.get('http://localhost:6001/author')
+    const booksQuery = await axios.get('http://localhost:6002/book')
 
     const authorMap = _.keyBy(authorsQuery.data.authors, 'email')
 
@@ -30,7 +30,10 @@ app.get('/books-with-author', async (req: Request, res: Response) => {
       }
     })
 
-    res.status(200).json(books)
+    res.status(200).json({
+      count: books.length,
+      books
+    })
   } catch (error) {
     res.status(400).json(error)
   }
