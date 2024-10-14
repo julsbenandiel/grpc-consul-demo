@@ -38,7 +38,10 @@ app.get('/books-with-author', async (req: Request, res: Response) => {
       }
     })
 
-    res.status(200).json(books)
+    res.status(200).json({
+      count: books.length,
+      books
+    })
     
   } catch (error) {
     res.status(400).json(error)
