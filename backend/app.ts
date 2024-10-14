@@ -16,11 +16,6 @@ app.get('/health', async (_: Request, res: Response) => {
   res.status(200).json({ status: "[backend] healthy" })
 })
 
-app.get('/services', async (_: Request, res: Response) => {
-  const services = await ServiceLocator.getRegisteredServices()
-  res.status(200).json(services)
-})
-
 app.get('/books-with-author', async (req: Request, res: Response) => {
   try {
     const authorsQuery = await authorService.getAuthors()

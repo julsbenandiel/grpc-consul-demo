@@ -4,8 +4,17 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
+	"net"
 	"net/http"
+	"os"
+	"path/filepath"
+	"strconv"
 	"time"
+
+	"github.com/joho/godotenv"
+	"go.mongodb.org/mongo-driver/v2/mongo"
+	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
 type ConsulService struct {
@@ -25,7 +34,45 @@ type ServiceCheck struct {
 	Timeout  string `json:"Timeout"`
 }
 
-func RegisterService(consulAddr, serviceID, serviceName, serviceAddr string, servicePort int) error {
+func loadEnv() {
+	envPath := filepath.Join("..", ".env.local")
+	err := godotenv.Load(envPath)
+
+	if err != nil {
+		log.Fatalf("Error loading .env file: %v", err)
+	}
+}
+
+func toInt(s string) int {
+	n, err := strconv.Atoi(s)
+	if err != nil {
+		log.Fatalf("Cannot convert %v to string", s)
+	}
+	return n
+}
+
+func getMongoClient() *mongo.Client {
+	clientOptions := options.Client().ApplyURI(os.Getenv("MONGO_URI"))
+	client, err := mongo.Connect(clientOptions)
+
+	if err != nil {
+		log.Fatalf("Failed to connect to MongoDB: %v", err)
+	}
+
+	fmt.Println("Author service mongo status: CONNECTED")
+	return client
+}
+
+func runServer(port string) net.Listener {
+	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", port))
+	if err != nil {
+		log.Fatalf("Failed to start server")
+	}
+
+	return listener
+}
+
+func registerService(consulAddr, serviceID, serviceName, serviceAddr string, servicePort int) error {
 	service := ConsulService{
 		ID:      serviceID,
 		Name:    serviceName,
