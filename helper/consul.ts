@@ -50,16 +50,6 @@ export class ServiceLocator {
     return service
   }
 
-  static async getRegisteredServices() {
-    try {
-      const consul = new Consul({ host: 'localhost', port: '8500' })
-      const services = await consul.agent.services()
-      return services
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   static async saveToServiceRegistry(payload: Partial<Consul.Agent.Service.RegisterOptions>): Promise<Error | null> {
     const consulClient = new Consul({ host: 'localhost', port: '8500' })
 
